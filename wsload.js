@@ -1,4 +1,4 @@
-var runSingleTestsuite = require('./runSingleTestsuite.js');
+var runSingleTestsuite = require('./lib/runSingleTestsuite.js');
 
 var wsload = module.exports;
 var suiteResults = new Array();
