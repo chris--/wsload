@@ -1,34 +1,35 @@
 {
-    "name" : "ben",
-    "version" : "0.0.0",
-    "description" : "simple timing benchmarks for synchronous and asynchronous code",
-    "main" : "index.js",
+    "name" : "wsbench",
+    "version" : "0.0.1",
+    "description" : "Load Testing Application for massive concurrent connections and complex scripted testcases",
+    "main" : "wsbench.js",
     "directories" : {
-        "lib" : ".",
+        "lib" : "lib",
         "example" : "example",
         "test" : "test"
     },
     "devDependencies" : {
-        "tap" : "0.0.x"
+       
     },
     "scripts" : {
-        "test" : "tap test"
+      
     },
     "repository" : {
         "type" : "git",
-        "url" : "http://github.com/chris--/node-ben.git"
+        "url" : "http://github.com/chris--/wsload.git"
     },
     "keywords" : [
         "benchmark",
         "timing",
         "time",
-        "stopwatch"
+        "stopwatch",
+	"load testing"
     ],
     "author" : {
-        "name" : "James Halliday, Christian Vogt",
-        "email" : "mail@substack.net, mail@christianvogt.de",
-        "url" : "http://substack.net, http://christianvogt.de"
+        "name" : "Christian Vogt",
+        "email" : "mail@christianvogt.de",
+        "url" : "http://christianvogt.de"
     },
     "license" : "MIT/X11",
-    "engine" : { "node" : ">=0.4" }
+    "engine" : { "node" : ">=0.6" }
 }
