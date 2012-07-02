@@ -1,5 +1,5 @@
 {
-    "name" : "wsbench",
+    "name" : "wsload",
     "version" : "0.0.1",
     "description" : "Load Testing Application for massive concurrent connections and complex scripted testcases",
     "main" : "wsbench.js",

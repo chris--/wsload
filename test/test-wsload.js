@@ -10,7 +10,7 @@ var testcase1 = function doMeAFavor (cb) {
 	param1 = 'im testcase 1';
 	setTimeout(function (){
 		cb(param1);
-	},100); //wait 100 ms, then execute cb
+	},1); //wait 100 ms, then execute cb
 }
 testcase1.timeout = 200;
 
@@ -34,7 +34,7 @@ var testcase3 = function getRequest (cb) {
 	};
 	http.request(options, function(res){cb();}).end();
 };
-testcase3.timeout = 200;
+//testcase3.timeout = 4500;
 
 
-wsload.runSuite('superSuiteName', 1, [testcase1, testcase2, testcase3], preTestFunc, 10000, function(err,result){/*console.log(err + result)*/});
+wsload.runSuite('superSuiteName', 6000, [testcase1, testcase2, testcase3], preTestFunc, 20000, function(err,result){console.log('wtf' + result)});

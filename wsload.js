@@ -26,7 +26,6 @@ wsload.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFu
 }
 
 function computeResult() {
-	
 	//calculate statistics etc. here
 	console.log('==========RESULT OVERVIEW==========');
 	var suiteRunInMs = 0;
@@ -41,9 +40,9 @@ function computeResult() {
 					console.log('i timed out: ' + testfunctionResult.testname); //this test timed out
 				}
 			});
-			suiteRunInMs = element.timeout;
-			lowestSuiteDuration = element.timeout;
-			highestSuiteDuration = element.timeout;
+			//suiteRunInMs = element.timeout;
+			//lowestSuiteDuration = element.timeout;
+			//highestSuiteDuration = element.timeout;
 			return;
 		}
 		if (lowestSuiteDuration>element.runDurationInMs || lowestSuiteDuration === 0) {
