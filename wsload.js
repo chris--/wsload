@@ -1,30 +1,37 @@
 var Testsuite = require('./lib/Testsuite.js');
 
 var wsload = module.exports;
-var suiteResults = new Array();
-var suitesCompleted = 0;
-var suitesToRun;
-var cb;
 
 wsload.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_cb) {
-	var testsuite = new Testsuite(param_suiteTimeout);
-	var suitenumber = 0;
+	
+	//keep track of finished suites
+	var suitesFinished = 0;
+	var suitesCreated = 0;
 
-	suitesToRun = param_timesToRunSuite;
-	cb = param_cb;
-	while (param_timesToRunSuite--) {
-		testsuite.run(suitenumber, param_suiteName, param_testFunctions, param_preTestFunction, function(err, result){
-			if(err) {
-				console.error(err);
-			}
-			suiteResults.push(result);
-			suitesCompleted++;
-			if(suitesCompleted==suitesToRun) {
-				computeResult();
-			}
-		});
-		suitenumber++;
+	//create suites
+	var suites = new Array();
+	while(param_timesToRunSuite--) {
+		suites.push(new Testsuite(suitesCreated++, param_suiteName, param_suiteTimeout, param_testFunctions, param_preTestFunction, null));
 	}
+	//add listeners
+	suites.forEach(function(testsuite){
+		testsuite.on('finished', function(result){
+			suitesFinished++;
+			if(suitesFinished==suitesCreated) {
+				console.log('finito');
+			} 
+		});
+
+		testsuite.on('timeout', function(suite, test){
+			console.log('suite #' + suite + ' timed out in test ' + test);
+			suitesFinished++;
+		});
+	});
+	//run suites
+	suites.forEach(function(testsuite){
+		testsuite.run();
+	});
+
 }
 
 function computeResult() {
