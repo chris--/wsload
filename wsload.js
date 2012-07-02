@@ -1,4 +1,4 @@
-var runSingleTestsuite = require('./lib/runSingleTestsuite.js');
+var Testsuite = require('./lib/Testsuite.js');
 
 var wsload = module.exports;
 var suiteResults = new Array();
@@ -7,11 +7,13 @@ var suitesToRun;
 var cb;
 
 wsload.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_cb) {
+	var testsuite = new Testsuite(param_suiteTimeout);
 	var suitenumber = 0;
+
 	suitesToRun = param_timesToRunSuite;
 	cb = param_cb;
 	while (param_timesToRunSuite--) {
-		runSingleTestsuite.run(suitenumber, param_suiteName, param_suiteTimeout, param_testFunctions, param_preTestFunction, function(err, result){
+		testsuite.run(suitenumber, param_suiteName, param_testFunctions, param_preTestFunction, function(err, result){
 			if(err) {
 				console.error(err);
 			}
