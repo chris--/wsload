@@ -1,12 +1,16 @@
 var Testsuite = require('./lib/Testsuite.js');
 
 var wsload = module.exports;
+var Logger = require('./lib/Logger.js');
 
 wsload.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_cb) {
 	
 	//keep track of finished suites
 	var suitesFinished = 0;
 	var suitesCreated = 0;
+
+	//create logger
+	logger = new Logger();
 
 	//create suites
 	var suites = new Array();
@@ -16,9 +20,11 @@ wsload.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFu
 	//add listeners
 	suites.forEach(function(testsuite){
 		testsuite.on('finished', function(result){
+			logger.log(result);
 			suitesFinished++;
 			if(suitesFinished==suitesCreated) {
-				console.log('finito');
+				console.log(result);
+				logger.close();
 			} 
 		});
 

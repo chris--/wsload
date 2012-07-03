@@ -1,5 +1,4 @@
 var Testsuite = require('../lib/Testsuite.js');
-var io = require('socket.io-client');
 var http = require('http');
 
 var pretest = function(cb){
@@ -17,7 +16,7 @@ var test2 = function test2 (input, cb, global) {
 	setTimeout(function(){
 		//console.log('test2, output von test1: ' + input);
 		cb(null,'outputTest2');
-	},120);
+	},80);
 }
 test2.timeout = 100;
 
@@ -36,7 +35,7 @@ testcase3.timeout = 500000;
 
 //param_suiteNumber, param_suiteName, param_suiteTimeout, param_suiteFunctions, param_preTestFunction, param_globalUserVar
 var testsuite = new Testsuite(1,'testSuite', 1000, [testcase3], pretest, 'globaltest');
-var testsuite2 = new Testsuite(2,'testSuite2', 1000, [test2], pretest, 'globaltest');
+var testsuite2 = new Testsuite(2,'testSuite2', 1000, [test2], null, 'globaltest');
 
 testsuite.run();
 testsuite2.run();
