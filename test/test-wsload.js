@@ -1,40 +1,27 @@
-var wsload = require('../wsload.js');
-var http = require('http');
+var Wsload = require('../wsload.js');
 
 var preTestFunc = function preTestFunc (cb){
-	//console.log('pretestCode running');
-	setTimeout(cb,0);
+	var randomnumber=Math.floor(Math.random()*101); //wait 1-100 ms
+	setTimeout(cb,randomnumber);
 }
 
-var testcase1 = function doMeAFavor (cb) {
-	param1 = 'im testcase 1';
-	setTimeout(function (){
-		cb(param1);
-	},1); //wait 100 ms, then execute cb
+var testcase1 = function add (param, cb, global) {
+	var i = 1;
+	var j = 2;
+	var k = i+j;
+	cb(null, k); //set k as output value
 }
-testcase1.timeout = 200;
+testcase1.timeout = 150; //set timeout to 15ms
 
 
-var testcase2 = function doMeAFavor2 (cb,param) {
-	if (param === 'im testcase 1') {
-		console.log('testcase2 : super');
-	}
-	setTimeout(function(){
-		cb('test aus case 2');
-	},1); //wait 200 ms and execute cb
+var testcase2 = function subtract (param, cb, global) {
+	var i = param; 	//matches k from testcase1 (=3)
+	var j = i-1;
+	console.log('test2: j=' + j);	//j=2
+	cb(null, j); //set k as output value
 }
-testcase2.timeout = 400;
-
-var testcase3 = function getRequest (cb) {
-	var options = {
-	  host: 'christianvogt.de',
-	  path: '/',
-	  port: '80',
-	  method: 'GET'
-	};
-	http.request(options, function(res){cb();}).end();
-};
-//testcase3.timeout = 4500;
+testcase2.timeout = 200; //set timeout to 20ms
 
 
-wsload.runSuite('superSuiteName', 6000, [testcase1, testcase2, testcase3], preTestFunc, 20000, function(err,result){console.log('wtf' + result)});
+var wsload = new Wsload();
+wsload.runSuite('myFirstWsloadSuite',3,[testcase1,testcase2],null,300);
