@@ -2,7 +2,7 @@ var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 
 
-var Wsload = module.exports = function () {
+var Wsload = module.exports = function (param_logTarget) {
 	var Logger = require('./lib/Logger.js');
 
 	//random uuid generator from https://gist.github.com/1308368
@@ -11,6 +11,7 @@ var Wsload = module.exports = function () {
 
 	//create logger
 	this.logger = new Logger();
+	this.logger.setLogTarget(param_logTarget);
 };
 
 
@@ -122,4 +123,4 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 
 Wsload.prototype.close = function() {
 	this.logger.close();
-}
+};
