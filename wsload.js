@@ -40,7 +40,9 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 };
 
 Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
-	
+	//result array
+	var results = [];
+
 	//create logger
 	this.logger = new Logger({logTarget:process.env.logTarget});
 
@@ -64,9 +66,11 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	//add listeners
 	suites.forEach (function (testsuite) {
 		testsuite.on('finished', function (result) {
-			that.logger.log(result);
+			results.push(result);
 			suitesFinished++;
 			if(suitesFinished === suitesCreated) {
+				//we are done with this Worker, send 
+				that.logger.log(result);
 				that._closeDb();
 			}
 		});
