@@ -23,7 +23,7 @@
         "timing",
         "time",
         "stopwatch",
-	"load testing"
+        "load testing"
     ],
     "author" : {
         "name" : "Christian Vogt",
@@ -31,5 +31,5 @@
         "url" : "http://christianvogt.de"
     },
     "license" : "MIT/X11",
-    "engine" : { "node" : ">=0.6" }
+    "engine" : { "node" : ">=0.8" }
 }
