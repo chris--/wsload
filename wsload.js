@@ -1,17 +1,17 @@
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
+var Logger = require('./lib/Logger.js');
+var worker = cluster.worker;
 
-
-var Wsload = module.exports = function (param_logTarget) {
-	var Logger = require('./lib/Logger.js');
-
+var Wsload = module.exports = function (param_settings) {
+	
 	//random uuid generator from https://gist.github.com/1308368
 	function uuidGenerator(a,b){for(b=a='';a++<36;b+=a*51&52?(a^15?8^Math.random()*(a^20?16:4):4).toString(16):'-');return b;}
 	this.uuid = uuidGenerator();
+	if (param_settings) {
+		this.logTarget = param_settings.logTarget;
+	}
 
-	//create logger
-	this.logger = new Logger();
-	this.logger.setLogTarget(param_logTarget);
 };
 
 
@@ -28,7 +28,7 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 	if (cluster.isMaster) {
 		// Fork workers.
 		for (var i = 0; i < workerCount; i++) {
-			cluster.fork({uuid:this.uuid, workerCount:workerCount});
+			cluster.fork({uuid:this.uuid, workerCount:workerCount, logTarget:this.logTarget});
 		}
 		cluster.on('exit', function(worker, code, signal) {
 			console.log('worker ' + worker.pid + ' died');
@@ -40,6 +40,10 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 };
 
 Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
+	
+	//create logger
+	this.logger = new Logger({logTarget:process.env.logTarget});
+
 	//run on the cluster
 	var Testsuite = require('./lib/Testsuite.js');
 	
@@ -63,7 +67,7 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 			that.logger.log(result);
 			suitesFinished++;
 			if(suitesFinished === suitesCreated) {
-				//param_cb(null,'done');
+				that._closeDb();
 			}
 		});
 
@@ -121,6 +125,6 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 // 	cb(null, 'done');
 // }
 
-Wsload.prototype.close = function() {
-	this.logger.close();
+Wsload.prototype._closeDb = function() {
+	this.logger.closeDb();
 };
