@@ -70,7 +70,7 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 			suitesFinished++;
 			if(suitesFinished === suitesCreated) {
 				//we are done with this Worker, send 
-				that.logger.log(result);
+				that.logger.log(results);
 				that._closeDb();
 			}
 		});
