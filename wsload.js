@@ -28,12 +28,13 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 	if (cluster.isMaster) {
 		// Fork workers.
 		for (var i = 0; i < workerCount; i++) {
-			cluster.fork({uuid:this.uuid, workerCount:workerCount, logTarget:this.logTarget});
+			cluster.fork({uuid:this.uuid, workerCount:workerCount, workerId:i, logTarget:this.logTarget});
 		}
 		cluster.on('exit', function(worker, code, signal) {
 			console.log('worker ' + worker.pid + ' died');
 		});
 	} else {
+		//calculate 
 		this._spawnWorker(param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar);
 	}
 
@@ -49,12 +50,25 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	//run on the cluster
 	var Testsuite = require('./lib/Testsuite.js');
 	
+
+	//parse Parameter
+	var workerId = parseInt(process.env.workerId);
+	var timesToRunSuite = parseInt(param_timesToRunSuite);
+	var workerCount = parseInt(process.env.workerCount);
+
+	//calculate start# for this worker, check github issue#2
+	var start = (workerId * timesToRunSuite)/workerCount;
+	start = Math.round(start);
+	var stop = (((workerId+1) * timesToRunSuite)/workerCount) - 1;
+	stop = Math.round(stop);
+	//DEBUG Print: console.log('id: ' + process.env.workerId + ', start: ' + Math.round(start) + ', stop: ' + Math.round(stop));
+
 	//keep track of finished suites
-	var suitesFinished = 0;
-	var suitesCreated = 0;
+	var suitesFinished = start;
+	var suitesCreated = start;
 
 	//times to run suite per core
-	var timesToRunSuitePerCore = Math.floor(param_timesToRunSuite/process.env.workerCount);
+	var timesToRunSuitePerCore = stop-start+1;
 
 	//create suites
 	var suites = [];
