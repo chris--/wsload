@@ -52,6 +52,7 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	
 
 	//parse Parameter
+	this.uuid = process.env.uuid;
 	var workerId = parseInt(process.env.workerId);
 	var timesToRunSuite = parseInt(param_timesToRunSuite);
 	var workerCount = parseInt(process.env.workerCount);
@@ -73,7 +74,7 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	//create suites
 	var suites = [];
 	while (timesToRunSuitePerCore--) {
-		suites.push(new Testsuite(process.env.uuid, suitesCreated++, param_suiteName, param_suiteTimeout, param_testFunctions, param_preTestFunction, param_globalVar));
+		suites.push(new Testsuite(this.uuid, suitesCreated++, param_suiteName, param_suiteTimeout, param_testFunctions, param_preTestFunction, param_globalVar));
 	}
 
 	var that = this;
