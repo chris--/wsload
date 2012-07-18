@@ -4,16 +4,26 @@ var Logger = require('./lib/Logger.js');
 var worker = cluster.worker;
 
 var Wsload = module.exports = function (param_settings) {
-	
-	//random uuid generator from https://gist.github.com/1308368
-	function uuidGenerator(a,b){for(b=a='';a++<36;b+=a*51&52?(a^15?8^Math.random()*(a^20?16:4):4).toString(16):'-');return b;}
-	this.uuid = uuidGenerator();
-	if (param_settings) {
-		this.logTarget = param_settings.logTarget;
-	}
-
+	if(cluster.isMaster) {
+		if(!this.uuid) {
+			this.uuid = this._generateUuid();	
+		};
+		if (param_settings) {
+			this.logTarget = param_settings.logTarget;
+			if(param_settings.uuid) {
+				this.uuid = param_settings.uuid;
+			};
+		};
+	};
 };
 
+Wsload.prototype._generateUuid = function () {
+	//random uuid generator from https://gist.github.com/1308368
+	if (cluster.isMaster) { //only the master process is allowed to change the uuid
+		var uuid = function uuidGenerator(a,b){for(b=a='';a++<36;b+=a*51&52?(a^15?8^Math.random()*(a^20?16:4):4).toString(16):'-');return b;}
+		return uuid();
+	} 
+};
 
 Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
 	var workerCount = 0;
@@ -23,7 +33,7 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 		workerCount = param_timesToRunSuite;
 	} else {
 		workerCount = numCPUs;
-	}
+	};
 
 	if (cluster.isMaster) {
 		// Fork workers.
@@ -36,7 +46,7 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 	} else {
 		//calculate 
 		this._spawnWorker(param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar);
-	}
+	};
 
 };
 

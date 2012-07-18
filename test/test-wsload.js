@@ -23,5 +23,5 @@ var testcase2 = function subtract (param, cb, global) {
 testcase2.timeout = 200; //set timeout to 20ms
 
 
-var wsload = new Wsload();
+var wsload = new Wsload({logTarget:'db'});
 wsload.runSuite('myFirstWsloadSuite',3,[testcase1,testcase2],null,300);
