@@ -2,8 +2,12 @@ var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var Logger = require('./lib/Logger.js');
 var worker = cluster.worker;
+var events = require('events');
+var util = require('util');
 
 var Wsload = module.exports = function (param_settings) {
+	events.EventEmitter.call(this);
+
 	if(cluster.isMaster) {
 		if(!this.uuid) {
 			this.uuid = this._generateUuid();	
@@ -16,6 +20,7 @@ var Wsload = module.exports = function (param_settings) {
 		};
 	};
 };
+util.inherits(Wsload,events.EventEmitter);
 
 Wsload.prototype._generateUuid = function () {
 	//random uuid generator from https://gist.github.com/1308368
@@ -27,6 +32,7 @@ Wsload.prototype._generateUuid = function () {
 
 Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
 	var workerCount = 0;
+	var that = this;
 
 	if (numCPUs>param_timesToRunSuite) {
 		//there are more cores than tests to run
@@ -38,16 +44,26 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 	if (cluster.isMaster) {
 		// Fork workers.
 		for (var i = 0; i < workerCount; i++) {
-			cluster.fork({uuid:this.uuid, workerCount:workerCount, workerId:i, logTarget:this.logTarget});
-		}
-		cluster.on('exit', function(worker, code, signal) {
-			console.log('worker ' + worker.pid + ' died');
+			var worker = cluster.fork({uuid:this.uuid, workerCount:workerCount, workerId:i, logTarget:this.logTarget});
+			worker.on('message', function (event) {
+				that.emit(event.type, event.msg)
+			});
+		};
+		
+		cluster.on('exit', function (worker, code, signal) {
+			if (!--workerCount) {
+				that._tearDown();
+			}
 		});
 	} else {
 		//calculate 
 		this._spawnWorker(param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar);
 	};
+};
 
+Wsload.prototype._tearDown = function () {
+	this._computeResult();
+	this.emit('finished');
 };
 
 Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
@@ -97,12 +113,18 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 				//we are done with this Worker, send 
 				that.logger.log(results);
 				that._closeDb();
+				var clusterInstance = cluster.worker;
+				clusterInstance.destroy();
 			}
 		});
 
 		testsuite.on('timeout', function (suite, test) {
-			console.log('suite ' + param_suiteName + '#' + suite + ' timed out in test ' + test);
-			suitesFinished++;
+			var msgString = 'Testsuite ' + param_suiteName + '#' + suite + ' timed out in testcase ' + test;
+			process.send({
+				type:'timeout', 
+				msg: msgString
+			});
+			//suitesFinished++; this should be handled by the 'finish' event callback, which the testsuite sends after a timeout
 		});
 	});
 	
@@ -112,47 +134,48 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	});
 };
 
-// Wsload.prototype.computeResult = function () {
-// 	//calculate statistics etc. here
-// 	console.log('computing ' + this.uuid);
-// 	//logger = new Logger();
-// 	this.logger.get(this.uuid, function (err, result) {
-// 		console.log(result);
-// 	});
+Wsload.prototype._computeResult = function () {
+	//calculate statistics etc. here
+	console.log('computing ' + this.uuid);
+	var logger = new Logger();
+	logger.get(this.uuid, function (err, result) {
+		if(err) console.log('err: ' + err);
+		console.log('result: ' + result);
+		logger.closeDb();
+	});
 
-// 	console.log('==========RESULT OVERVIEW==========');
-// 	var suiteRunInMs = 0;
-// 	var lowestSuiteDuration = 0;
-// 	var highestSuiteDuration = 0;
+	console.log('==========RESULT OVERVIEW==========');
+	var suiteRunInMs = 0;
+	var lowestSuiteDuration = 0;
+	var highestSuiteDuration = 0;
 
-// 	suiteResults.forEach(function(element){
-// 		if (element.timeoutOccured) {
-// 			//check which test timed out
-// 			element.testsRun.forEach(function(testfunctionResult) {
-// 				if (testfunctionResult.runDurationInMs==null) {
-// 					console.log('i timed out: ' + testfunctionResult.testname); //this test timed out
-// 				}
-// 			});
-// 			//suiteRunInMs = element.timeout;
-// 			//lowestSuiteDuration = element.timeout;
-// 			//highestSuiteDuration = element.timeout;
-// 			return;
-// 		}
-// 		if (lowestSuiteDuration>element.runDurationInMs || lowestSuiteDuration === 0) {
-// 			lowestSuiteDuration = element.runDurationInMs;
-// 		}
-// 		if (highestSuiteDuration<element.runDurationInMs) {
-// 			highestSuiteDuration = element.runDurationInMs;
-// 		}
-// 		suiteRunInMs = suiteRunInMs + element.runDurationInMs;
-// 	})
+	/*suiteResults.forEach(function(element){
+		if (element.timeoutOccured) {
+			//check which test timed out
+			element.testsRun.forEach(function(testfunctionResult) {
+				if (testfunctionResult.runDurationInMs==null) {
+					console.log('i timed out: ' + testfunctionResult.testname); //this test timed out
+				}
+			});
+			//suiteRunInMs = element.timeout;
+			//lowestSuiteDuration = element.timeout;
+			//highestSuiteDuration = element.timeout;
+			return;
+		}
+		if (lowestSuiteDuration>element.runDurationInMs || lowestSuiteDuration === 0) {
+			lowestSuiteDuration = element.runDurationInMs;
+		}
+		if (highestSuiteDuration<element.runDurationInMs) {
+			highestSuiteDuration = element.runDurationInMs;
+		}
+		suiteRunInMs = suiteRunInMs + element.runDurationInMs;
+	});
 	
-// 	console.log('average suite duration: ' + suiteRunInMs/suiteResults.length + ' ms');
-// 	console.log('min suite duration: ' + lowestSuiteDuration + ' ms');
-// 	console.log('max suite duration: ' + highestSuiteDuration + ' ms');
-	
-// 	cb(null, 'done');
-// }
+	console.log('average suite duration: ' + suiteRunInMs/suiteResults.length + ' ms');
+	console.log('min suite duration: ' + lowestSuiteDuration + ' ms');
+	console.log('max suite duration: ' + highestSuiteDuration + ' ms');
+	*/
+}
 
 Wsload.prototype._closeDb = function() {
 	this.logger.closeDb();

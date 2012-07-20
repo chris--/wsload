@@ -9,19 +9,30 @@ var testcase1 = function add (param, cb, global) {
 	var i = 1;
 	var j = 2;
 	var k = i+j;
-	cb(null, k); //set k as output value
+	setTimeout(function(){
+		cb(null, k); //set k as output value
+	},1);
 }
-testcase1.timeout = 150; //set timeout to 15ms
+testcase1.timeout = 15; //set timeout to 15ms
 
 
 var testcase2 = function subtract (param, cb, global) {
 	var i = param; 	//matches k from testcase1 (=3)
 	var j = i-1;
-	console.log('test2: j=' + j);	//j=2
+	//console.log('test2: j=' + j);	//j=2
 	cb(null, j); //set k as output value
 }
-testcase2.timeout = 200; //set timeout to 20ms
+testcase2.timeout = 20; //set timeout to 20ms
+
+
+
 
 
 var wsload = new Wsload({logTarget:'db'});
-wsload.runSuite('myFirstWsloadSuite',3,[testcase1,testcase2],null,300);
+wsload.on('finished', function (msg) {
+	//console.log(msg);
+});
+wsload.on('timeout', function (msg) {
+	//console.log(msg);
+});
+wsload.runSuite('myFirstWsloadSuite',3,[testcase1,testcase2],null,300,null);
