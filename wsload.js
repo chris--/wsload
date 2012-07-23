@@ -136,13 +136,13 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 
 Wsload.prototype._computeResult = function () {
 	//calculate statistics etc. here
-	console.log('computing ' + this.uuid);
+	/*console.log('computing ' + this.uuid);
 	var logger = new Logger();
 	logger.get(this.uuid, function (err, result) {
 		if(err) console.log('err: ' + err);
 		console.log('result: ' + result);
 		logger.closeDb();
-	});
+	});*/
 
 	console.log('==========RESULT OVERVIEW==========');
 	var suiteRunInMs = 0;
