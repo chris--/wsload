@@ -70,9 +70,6 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	//result array
 	var results = [];
 
-	//create logger
-	this.logger = new Logger({logTarget:process.env.logTarget});
-
 	//run on the cluster
 	var Testsuite = require('./lib/Testsuite.js');
 	
@@ -111,11 +108,14 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 			suitesFinished++;
 			if(suitesFinished === suitesCreated) {
 				//we are done with this Worker, send 
-				that.logger.log(results);
-				that._closeDb();
-				var clusterInstance = cluster.worker;
-				clusterInstance.destroy();
-			}
+				var logger = new Logger({logTarget:process.env.logTarget});
+				logger.log(results, function () {
+					logger.closeDb();
+					var clusterInstance = cluster.worker;
+					clusterInstance.destroy();
+				});
+				
+			};
 		});
 
 		testsuite.on('timeout', function (suite, test) {
@@ -124,7 +124,6 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 				type:'timeout', 
 				msg: msgString
 			});
-			//suitesFinished++; this should be handled by the 'finish' event callback, which the testsuite sends after a timeout
 		});
 	});
 	
@@ -136,13 +135,13 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 
 Wsload.prototype._computeResult = function () {
 	//calculate statistics etc. here
-	/*console.log('computing ' + this.uuid);
+	console.log('computing ' + this.uuid);
 	var logger = new Logger();
 	logger.get(this.uuid, function (err, result) {
 		if(err) console.log('err: ' + err);
 		console.log('result: ' + result);
 		logger.closeDb();
-	});*/
+	});
 
 	console.log('==========RESULT OVERVIEW==========');
 	var suiteRunInMs = 0;
@@ -175,8 +174,4 @@ Wsload.prototype._computeResult = function () {
 	console.log('min suite duration: ' + lowestSuiteDuration + ' ms');
 	console.log('max suite duration: ' + highestSuiteDuration + ' ms');
 	*/
-}
-
-Wsload.prototype._closeDb = function() {
-	this.logger.closeDb();
 };
