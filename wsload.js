@@ -109,7 +109,8 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 			if(suitesFinished === suitesCreated) {
 				//we are done with this Worker, send 
 				var logger = new Logger({logTarget:process.env.logTarget});
-				logger.log(results, function () {
+				logger.log(results, function (err) {
+					if(err) throw new Error(err);
 					logger.closeDb();
 					var clusterInstance = cluster.worker;
 					clusterInstance.destroy();
