@@ -136,43 +136,43 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 
 Wsload.prototype._computeResult = function () {
 	//calculate statistics etc. here
-	console.log('computing ' + this.uuid);
+	console.log('calculating results for ' + this.uuid);
+	var suiteResults;
+
 	var logger = new Logger();
-	logger.get(this.uuid, function (err, result) {
+	logger.get(this.uuid, function (err, resultArray) {
 		if(err) console.log('err: ' + err);
-		console.log('result: ' + result);
+		suiteResults = resultArray;
 		logger.closeDb();
+		suiteResults.forEach(function(element){
+			if (element.timeoutOccured) {
+				//check which test timed out
+				/*element.forEach(function(testfunctionResult) {
+					if (testfunctionResult.runDurationInMs==null) {
+						console.log('i timed out: ' + testfunctionResult.testname); //this test timed out
+					}
+				});*/
+				//suiteRunInMs = element.timeout;
+				//lowestSuiteDuration = element.timeout;
+				//highestSuiteDuration = element.timeout;
+				return;
+			}
+			if (lowestSuiteDuration>element.runDurationInMs || lowestSuiteDuration === 0) {
+				lowestSuiteDuration = element.runDurationInMs;
+			}
+			if (highestSuiteDuration<element.runDurationInMs) {
+				highestSuiteDuration = element.runDurationInMs;
+			}
+			suiteRunInMs = suiteRunInMs + element.runDurationInMs;
+		});
+		
+		console.log('average suite duration: ' + suiteRunInMs/suiteResults.length + ' ms');
+		console.log('min suite duration: ' + lowestSuiteDuration + ' ms');
+		console.log('max suite duration: ' + highestSuiteDuration + ' ms');
 	});
 
 	console.log('==========RESULT OVERVIEW==========');
 	var suiteRunInMs = 0;
 	var lowestSuiteDuration = 0;
 	var highestSuiteDuration = 0;
-
-	/*suiteResults.forEach(function(element){
-		if (element.timeoutOccured) {
-			//check which test timed out
-			element.testsRun.forEach(function(testfunctionResult) {
-				if (testfunctionResult.runDurationInMs==null) {
-					console.log('i timed out: ' + testfunctionResult.testname); //this test timed out
-				}
-			});
-			//suiteRunInMs = element.timeout;
-			//lowestSuiteDuration = element.timeout;
-			//highestSuiteDuration = element.timeout;
-			return;
-		}
-		if (lowestSuiteDuration>element.runDurationInMs || lowestSuiteDuration === 0) {
-			lowestSuiteDuration = element.runDurationInMs;
-		}
-		if (highestSuiteDuration<element.runDurationInMs) {
-			highestSuiteDuration = element.runDurationInMs;
-		}
-		suiteRunInMs = suiteRunInMs + element.runDurationInMs;
-	});
-	
-	console.log('average suite duration: ' + suiteRunInMs/suiteResults.length + ' ms');
-	console.log('min suite duration: ' + lowestSuiteDuration + ' ms');
-	console.log('max suite duration: ' + highestSuiteDuration + ' ms');
-	*/
 };
