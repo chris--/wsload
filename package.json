@@ -4,9 +4,13 @@
     "description" : "Load Testing Application for massive concurrent connections and complex scripted testcases",
     "main" : "Wsload.js",
     "directories" : {
+	"node_modules" : "node_modules",
         "lib" : "lib",
         "example" : "example",
         "test" : "test"
+    },
+    "dependencies": {
+        "mongodb" : "*"
     },
     "devDependencies"   : {
        "nodeunit" : "*"
