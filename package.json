@@ -8,11 +8,11 @@
         "example" : "example",
         "test" : "test"
     },
-    "devDependencies" : {
-       
+    "devDependencies"   : {
+       "nodeunit" : "*"
     },
     "scripts" : {
-      
+      "test": "$(which nodeunit || echo node_modules/nodeunit/bin/nodeunit) test/unit/scripts.js"
     },
     "repository" : {
         "type" : "git",
