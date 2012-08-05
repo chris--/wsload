@@ -80,9 +80,11 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	var timesToRunSuite = parseInt(param_timesToRunSuite);
 	var workerCount = parseInt(process.env.workerCount);
 
-	//calculate start# for this worker, check github issue#2
+	//calculate Testsuite start# for this worker, check github issue#2
 	var start = (workerId * timesToRunSuite)/workerCount;
 	start = Math.round(start);
+
+	//calculate Testsuite stop# for this worker, check github issue#2
 	var stop = (((workerId+1) * timesToRunSuite)/workerCount) - 1;
 	stop = Math.round(stop);
 	//DEBUG Print: console.log('id: ' + process.env.workerId + ', start: ' + Math.round(start) + ', stop: ' + Math.round(stop));
