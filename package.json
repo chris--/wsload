@@ -1,6 +1,6 @@
 {
     "name" : "wsload",
-    "version" : "0.0.1",
+    "version" : "0.1.0",
     "description" : "Load Testing Application for massive concurrent connections and complex scripted testcases",
     "main" : "Wsload.js",
     "directories" : {
