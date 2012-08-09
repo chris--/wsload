@@ -1,0 +1,39 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="NAME">module.exports</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="WHIT">	</span><span class="NAME">setUp</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  3</span> </span><span class="WHIT">		</span><span class="NAME">this.Logger</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">require</span><span class="PUNC">(</span><span class="STRN">'../../lib/Logger.js'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="WHIT">		</span><span class="NAME">callback</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  5</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="WHIT">	</span><span class="STRN">"test Log To db"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">test</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  7</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">that</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT">		</span><span class="NAME">test.doesNotThrow</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">loggerInstance</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">that.Logger</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">logTarget</span><span class="PUNC">:</span><span class="STRN">'db'</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="WHIT">			</span><span class="NAME">loggerInstance.log</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">uuid</span><span class="PUNC">:</span><span class="STRN">'from-unit-test'</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="WHIT">			</span><span class="NAME">setTimeout</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">				</span><span class="NAME">loggerInstance.closeDb</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">				</span><span class="NAME">test.done</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="NUMB">100</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="COMM">/* not yet in use,
+<span class='line'> 17</span> 	"test Get From db" : function (test) {
+<span class='line'> 18</span> 		var that = this;
+<span class='line'> 19</span> 		test.doesNotThrow ( function() {
+<span class='line'> 20</span> 			var loggerInstance = new that.Logger();
+<span class='line'> 21</span> 			//loggerInstance.log( {uuid:'from-unit-test'} );
+<span class='line'> 22</span> 			setTimeout(function(){
+<span class='line'> 23</span> 				loggerInstance.get('from-unit-test', function (err,resultArray) {
+<span class='line'> 24</span> 					test.equal(err, null);
+<span class='line'> 25</span> 					console.log(err);
+<span class='line'> 26</span> 					test.notEqual(resultArray[0], null)
+<span class='line'> 27</span> 					test.done();
+<span class='line'> 28</span> 				});
+<span class='line'> 29</span> 			},100);
+<span class='line'> 30</span> 		});
+<span class='line'> 31</span> 	}*/</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="PUNC">}</span><span class="PUNC">;</span></pre></body></html>

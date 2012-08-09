@@ -18,6 +18,7 @@ module.exports = Wsload;
 /**
  * Initialize a new Wsload object
  * 
+ * @constructor
  * @param {Object} param_settings
  * @api public
  */
