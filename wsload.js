@@ -1,3 +1,6 @@
+/**
+ * Module dependencies
+ */
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var Logger = require('./lib/Logger.js');
@@ -5,7 +8,18 @@ var worker = cluster.worker;
 var events = require('events');
 var util = require('util');
 
-var Wsload = module.exports = function (param_settings) {
+/**
+ * Expose `Wsload`
+ */
+module.exports = Wsload;
+
+/**
+ * Initialize a new Wsload object
+ * 
+ * @param {Object} param_settings
+ * @api public
+ */
+function Wsload (param_settings) {
 	events.EventEmitter.call(this);
 
 	if(cluster.isMaster) {
@@ -20,7 +34,19 @@ var Wsload = module.exports = function (param_settings) {
 		};
 	};
 };
+
+/**
+ * Inherits from `events.EvenEmitter`
+ */
+
 util.inherits(Wsload,events.EventEmitter);
+
+/**
+ * generates a pseudo random uuid
+ *
+ * @return {String}
+ * @api private
+ */
 
 Wsload.prototype._generateUuid = function () {
 	//random uuid generator from https://gist.github.com/1308368
@@ -29,6 +55,17 @@ Wsload.prototype._generateUuid = function () {
 		return uuid();
 	} 
 };
+
+/**
+ * runs all suites
+ *
+ * @param {String} param_suiteName
+ * @param {Integer} param_timesToRunSuite
+ * @param {Array} param_testFunction
+ * @param {Integer} param_suiteTimeout
+ * @param {Object} param_globalUserVar
+ * @api public
+ */
 
 Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
 	var workerCount = 0;
@@ -61,11 +98,27 @@ Wsload.prototype.runSuite = function (param_suiteName, param_timesToRunSuite, pa
 	};
 };
 
+/**
+ * emit "finished" event, this gets called when all tests are completed
+ *
+ * @api private
+ */
+
 Wsload.prototype._tearDown = function () {
 	this._computeResult();
 	this.emit('finished');
 };
 
+/**
+ * Spawns a Worker with help of the Cluster module
+ *
+ * @param {String} param_suiteName
+ * @param {Integer} param_timesToRunSuite
+ * @param {Array} param_testFunction
+ * @param {Integer} param_suiteTimeout
+ * @param {Object} param_globalUserVar
+ * @api private
+ */
 Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
 	//result array
 	var results = [];
@@ -136,6 +189,14 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
 	});
 };
 
+/**
+ * Calculates a simple result interpretation
+ *
+ * TODO:
+ *   WORK IN PROGRESS, needs testing and functionality. 
+ *
+ * @api private
+ */
 Wsload.prototype._computeResult = function () {
 	//calculate statistics etc. here
 	console.log('calculating results for ' + this.uuid);

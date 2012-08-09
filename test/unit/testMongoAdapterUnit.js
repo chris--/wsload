@@ -9,17 +9,9 @@ module.exports = {
 			var mongoAdapterInstance = new that.MongoAdapter(function(err,db){
 				test.equal(err,null);
 				test.notEqual(db,null);
-				test.done();
-			});
-		});
-	},
-	"retrieving from getInstance method" : function (test) {
-		var that = this;
-		test.doesNotThrow ( function() {
-			var mongoAdapterInstance = that.MongoAdapter.getInstance(function(err,db){
-				test.equal(err,null);
-				test.notEqual(db,null);
-				test.done();
+				mongoAdapterInstance.close(true, function(){
+					test.done();	
+				});
 			});
 		});
 	}
