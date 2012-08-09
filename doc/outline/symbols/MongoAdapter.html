@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - MongoAdapter</title>
+
+    <script type="text/javascript" src="../jproton.js"></script>
+    <script type="text/javascript" src="../ui.js"></script>
+    <script type="text/javascript" src="../sh.js"></script>
+		<link rel=stylesheet href="../sh.css" type="text/css">
+		<link rel=stylesheet href="../default.css" type="text/css">
+	</head>
+
+	<body>
+		<div id="main-wrapper">
+			<div id="main">
+<!-- ============================== classes index ============================ -->
+				<div id="index" class="fixed">
+					<div id="index-wrapper">
+	<div class="header">
+	  <div id="index-close" title="Esconde o outline.">&nbsp;</div>
+	  <div id="index-title">Project Outline</div>
+	</div>
+	<div id="index-menu"><a href="../index.html">Class Index</a>
+	| <a href="../files.html">File Index</a></div>
+	
+	<div id="index-content">
+		
+		<div class="classList">
+			
+			<div class="section">
+				<div title='Global namespace.' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><i><a href="../symbols/_global_.html">_global_</a></i></span></div><div class='sectionItems'><div class='sectionItem classProperty'><b class='icon' title='Module dependencies'><a href="../symbols/_global_.html#Adapter">Adapter</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Module dependencies'><a href="../symbols/_global_.html#mongo">mongo</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Module dependencies'><a href="../symbols/_global_.html#util">util</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Module dependencies'><a href="../symbols/_global_.html#EventEmitter">EventEmitter</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Module dependencies'><a href="../symbols/_global_.html#cluster">cluster</a></b></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new `Logger` The Logger logs results from the testruns to a db or, if not reachable, to the console' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/Logger.html">Logger</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Logs a message'><a href="../symbols/Logger.html#log">log</a></b><span class='signature'>(<span title="(Object) Object">param_logMessage</span>, <span title="(Function) Function">param_cb</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Gets results from database with given uuid'><a href="../symbols/Logger.html#get">get</a></b><span class='signature'>(<span title="(Integer) Integer">param_uuid</span>, <span title="(Function) Function">param_cb</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='open the db from the adapter'><a href="../symbols/Logger.html#openDb">openDb</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='closes the db with help of the adapter'><a href="../symbols/Logger.html#closeDb">closeDb</a></b><span class='signature'>()</span></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new `Measure` Object.' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/Measure.html">Measure</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='starts a measurement'><a href="../symbols/Measure.html#start">start</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='stops a measurement'><a href="../symbols/Measure.html#stop">stop</a></b><span class='signature'>()</span></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new `MongoAdapter`.' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/MongoAdapter.html">MongoAdapter</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Closes the connection to the Database'><a href="../symbols/MongoAdapter.html#close">close</a></b><span class='signature'>(<span title="(Boolean) Force disconnection">force</span>, <span title="(Function) Function">param_cb</span>)</span></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new `Testcase` A "Testcase" encapsulates the actual test function' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/Testcase.html">Testcase</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Run the test function with a given input parameter'><a href="../symbols/Testcase.html#runTest">runTest</a></b><span class='signature'>(<span title="(Object) Object">param_inputValue</span>, <span title="(Function) Function">param_cb</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the result from a time measurement for this test case (unit:milliseconds)'><a href="../symbols/Testcase.html#setRunDuration">setRunDuration</a></b><span class='signature'>(<span title="(Integer) Integer">param_runDuration</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns the test case result'><a href="../symbols/Testcase.html#getResult">getResult</a></b><span class='signature'>()</span></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new `Testsuite`.' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/Testsuite.html">Testsuite</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='preTestFunction is run before every testcase.'><a href="../symbols/Testsuite.html#preTestFunction">preTestFunction</a></b><span class='signature'>(<span title="(Function) Function">cb</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Adds a new Testcase to the Testsuite'><a href="../symbols/Testsuite.html#addTestcase">addTestcase</a></b><span class='signature'>(<span title="(Testcase) Testcase">param_testcase</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Runs this Testsuite'><a href="../symbols/Testsuite.html#run">run</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Adds a runtime result to a test case'><a href="../symbols/Testsuite.html#addResult">addResult</a></b><span class='signature'>(<span title="(Testcase) Testcase">param_testcase</span>, <span title="(Integer) Integer">param_timeInMs</span>)</span></div></div></div>
+			
+			<div class="section">
+				<div title='Initialize a new Wsload object' class='itemName'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/Wsload.html">Wsload</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='runs all suites'><a href="../symbols/Wsload.html#runSuite">runSuite</a></b><span class='signature'>(<span title="(String) String">param_suiteName</span>, <span title="(Integer) Integer">param_timesToRunSuite</span>, <span title="(Array) Array">param_testFunction</span>, <span title="(Integer) Integer">param_suiteTimeout</span>, <span title="(Object) Object">param_globalUserVar</span>, <span>param_globalVar</span>)</span></div></div></div>
+			
+		</div>
+	</div>
+</div>
+	
+
+				</div>
+				<div id="index-toggler" class="fixed">&laquo;</div>
+
+<!-- ============================== header ================================= -->	
+				<!-- begin static/header.html -->
+				<div class="header">
+  Framework jProton
+</div>
+
+				<!-- end static/header.html -->
+		
+				<div id="content">
+<!-- ============================== class title ============================ -->
+					<h1 class="classTitle">
+						Class MongoAdapter
+					</h1>
+		
+<!-- ============================== class summary ========================== -->			
+<!-- 
+					
+-->
+					<div class="full-description">
+						<p></p>
+					</div>
+					
+						<p class="fileName itemName"><i>Defined in: </i> <span class="icon"><a href="../symbols/src/_Users_christian_Documents_Uni_wsload_lib_MongoAdapter.js.html">MongoAdapter.js</a>.</span></p>
+					
+		
+<!-- ============================== constructor summary ==================== -->			
+					
+					<div class="summary section">
+						<div class="sectionTitle">Constructor Summary</div>
+						<div class="sectionItems">
+							<div class="sectionItem">
+								<div class="itemName">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon">new <a href="../symbols/MongoAdapter.html#constructor">MongoAdapter</a></b>
+									<span class='signature'>(<span title="(Function) Function">param_cb</span>)</span>
+									<span class='description'>Initialize a new `MongoAdapter`.</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+		
+<!-- ============================== properties summary ===================== -->
+					
+		
+<!-- ============================== methods summary ======================== -->
+					
+						
+						
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Closes the connection to the Database"><a href="../symbols/MongoAdapter.html#close">close</a></b><span class='signature'>(<span title="(Boolean) Force disconnection">force</span>, <span title="(Function) Function">param_cb</span>)</span>
+									<span class='description'>Closes the connection to the Database</span>
+								</div>
+							
+							</div>
+						</div>
+						
+					
+		
+<!-- ============================== constructor details ==================== -->		
+					
+					<div class="section details">
+						<div class="sectionTitle">
+							Constructor Detail
+						</div>
+						<div class="sectionItems">
+							<div class="sectionItem classItem itemName">
+								<div class="details"><a name="constructor"> </a>
+									
+									<div class="icon">
+										new <b>MongoAdapter</b>(<span title="(Function) Function">param_cb</span>)
+									</div>
+									
+									<div class="full-description">
+										Initialize a new `MongoAdapter`.
+
+Connects to a MongoDB on localhost
+TODO:Let the user decide, on which host the DB runs.
+										
+									</div>
+									
+									
+									<pre class="prettyprint"></pre>
+									
+									
+									
+										
+											<dl class="detailList">
+											<dt class="heading">Parameters:</dt>
+											
+												<dt>
+													<span class="light">{Function}</span>  <b>param_cb</b>
+													
+												</dt>
+													<dd></dd>
+											
+											</dl>
+										
+										
+										
+										
+										
+										
+										
+					
+								</div>
+							</div>
+						</div>
+					</div>
+					
+		
+<!-- ============================== field details ========================== -->		
+					
+		
+<!-- ============================== method details ========================= -->		
+					
+					<div class="details section">
+						<div class="sectionTitle">
+							Method Detail
+						</div>
+						<div class="sectionItems">
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name="close"> </a>
+									<div class="itemTitle icon">
+										close<span class="signature">(<span title="(Boolean) Force disconnection">force</span>, <span title="(Function) Function">param_cb</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Closes the connection to the Database
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Boolean}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>force</b>
+												</td>
+												<td class="methodItemDesc">
+											    Force disconnection
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Function}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>param_cb</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+						</div>
+					</div>
+					
+					
+				</div>
+				
+<!-- ============================== footer ================================= -->
+				<div class="fineprint" style="clear:both">
+					
+					Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Aug 09 2012 11:23:57 GMT+0200 (MESZ)
+				</div>
+				
+			</div>
+		</div>
+		
+	</body>
+</html>
