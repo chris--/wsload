@@ -1,6 +1,7 @@
 /**
  * Module dependencies
  */
+
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var Logger = require('./lib/Logger.js');
@@ -11,6 +12,7 @@ var util = require('util');
 /**
  * Expose `Wsload`
  */
+
 module.exports = Wsload;
 
 /**
@@ -19,6 +21,7 @@ module.exports = Wsload;
  * @param {Object} param_settings
  * @api public
  */
+
 function Wsload (param_settings) {
 	events.EventEmitter.call(this);
 
@@ -44,7 +47,7 @@ util.inherits(Wsload,events.EventEmitter);
 /**
  * generates a pseudo random uuid
  *
- * @return {String}
+ * @return {String} uuid
  * @api private
  */
 
@@ -119,6 +122,7 @@ Wsload.prototype._tearDown = function () {
  * @param {Object} param_globalUserVar
  * @api private
  */
+
 Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite, param_testFunctions, param_preTestFunction, param_suiteTimeout, param_globalVar) {
 	//result array
 	var results = [];
@@ -197,6 +201,7 @@ Wsload.prototype._spawnWorker = function (param_suiteName, param_timesToRunSuite
  *
  * @api private
  */
+
 Wsload.prototype._computeResult = function () {
 	//calculate statistics etc. here
 	console.log('calculating results for ' + this.uuid);
